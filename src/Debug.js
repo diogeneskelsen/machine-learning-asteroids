@@ -1,10 +1,9 @@
 import * as THREE from "three";
 
-function Debug(scene, camera, renderer, debug)
+function Debug(scene, camera, debug)
 {
 	this.scene = scene;
 	this.camera = camera;
-	this.renderer = renderer;
 	this.debug = debug;
 	this.response = [];
 	
@@ -16,6 +15,7 @@ function Debug(scene, camera, renderer, debug)
 		let cube = new THREE.Mesh(geometry, material);
 		this.scene.add( cube );
 
+		// Generate response
 		this.response['debug'] = this.debug;
 		this.response['cube'] = cube;
 
