@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import './App.css';
+
 import * as THREE from "three";
+import GLTFLoader from 'three-gltf-loader';
+//import {MTLLoader, OBJLoader} from 'three-obj-mtl-loader'
 
 class App extends Component {
   
@@ -33,7 +36,7 @@ class App extends Component {
     }*/
 
     var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    var material = new THREE.MeshBasicMaterial( { color: 0x84ff } );
+    var material = new THREE.MeshBasicMaterial( { color: 0x84ff, visible: false } );
     var cube = new THREE.Mesh( geometry, material );
     scene.add( cube );
 
@@ -66,7 +69,7 @@ for (var i = 0; i < 10000 ; i++) {
       //cube.rotation.x += 0.01;
       //cube.rotation.y += 0.01;
       
-      function timeout() {
+      /*function timeout() {
           setTimeout(function () {
               // Do Something Here
               // Then recall the parent function to
@@ -76,9 +79,9 @@ for (var i = 0; i < 10000 ; i++) {
               
               timeout();
           }, 10);
-      }
+      }*/
 
-      timeout();
+      //timeout();
 
       camera.position.z -= 1;
       cube.position.z -= 1; // same speed
@@ -95,6 +98,89 @@ for (var i = 0; i < 10000 ; i++) {
       renderer.render(scene, camera);
     };
 
+//let mtlLoader = new MTLLoader();
+ 
+//let objLoader = new OBJLoader();
+
+
+ 
+//mtlLoader.load('space-shuttle/source/ShuttleSceneH.mtl', (materials) => {
+  //materials.preload()
+  //objLoader.setMaterials(materials)
+  /*objLoader.load('ss/source/ShuttleSceneH.obj', (object) => {
+    var nave = object;
+    scene.add(nave);
+    nave.position.z -= 1;
+    var animate3 = function() {
+      requestAnimationFrame(animate3);
+      nave.position.z -= 1; // same speed
+      renderer.render(scene, camera);
+    };
+
+    animate3();
+  })*/
+//})
+
+    const loader = new GLTFLoader();
+
+    loader.load(
+        '/ioz-501_starship/scene.gltf',
+        ( gltf ) => {
+            // called when the resource is loaded
+            scene.add( gltf.scene );
+
+            //console.log(gltf);
+
+            gltf.scene.position.z = 0; // remove from the screen
+
+            gltf.scene.position.x = 0;
+            gltf.scene.position.y = 0;
+
+            gltf.scene.rotation.y = 1.58;
+            gltf.scene.rotation.x = 0.3;
+
+            var stabilization = false;
+
+            var animate2 = function() {
+              requestAnimationFrame(animate2);
+              if(gltf.scene.position.z > -120) {
+                gltf.scene.position.z -= 1.5;
+              } else {
+                gltf.scene.position.z -= 1;
+              }
+
+              if(stabilization == false) {
+                gltf.scene.position.y += 0.01;
+              } 
+
+              if(gltf.scene.position.y > 1.00) {
+                stabilization = true;
+              }
+
+              if(stabilization == true) {
+                gltf.scene.position.y -= 0.01;
+              }
+
+              if(gltf.scene.position.y < 0.00) {
+                stabilization = false;
+              }
+
+              renderer.render(scene, camera);
+            };
+
+            console.log("loading done!");
+
+            animate2();
+        },
+        ( xhr ) => {
+            // called while loading is progressing
+            console.log( `${( xhr.loaded / xhr.total * 100 )}% loaded` );
+        },
+        ( error ) => {
+            // called when loading has errors
+            console.error( 'An error happened', error );
+        },
+    );
 
 
     animate();
