@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import GLTFLoader from 'three-gltf-loader';
+import TWEEN from '@tweenjs/tween.js';
 
 // Custom imports and components
 import Debug from './Debug';
@@ -35,7 +36,7 @@ class App extends Component {
         let _light = new Light(scene);
 
         // Set default camera view
-        camera.position.z = 20;
+        camera.position.z = 0;
         camera.position.x = 0;
         camera.position.y = 0;
 
@@ -43,17 +44,19 @@ class App extends Component {
         let _stars = new Stars(scene);
 
         // Initialize main animation
-        let _universeAnimation = function() {
-            requestAnimationFrame(_universeAnimation);
+        let _mainAnimation = function() {
+            requestAnimationFrame(_mainAnimation);
 
             // Update camera position
-            camera.position.z -= 1;
+            camera.position.z -= 0.035; //comment to stop screen moving
 
             // Animation on debug mode
             if(_debug['debug'] === true) 
             {
                 let _debugdisplay = new DebugDisplay(_debug);
             }
+
+            TWEEN.update();
             
             // Stars animation
             for(let i = 0; i < _stars.length; i++){
@@ -64,7 +67,7 @@ class App extends Component {
             renderer.render(scene, camera);
         };
 
-        _universeAnimation();
+        _mainAnimation();
 
         // Main player
         loader.load('/ioz-501_starship/scene.gltf', 
@@ -73,50 +76,95 @@ class App extends Component {
                 scene.add(gltf.scene);
 
                 // Initial positions
-                gltf.scene.position.z = 0; // remove from the screen
+                gltf.scene.position.z = 0; // 0 to remove from the screen
                 gltf.scene.position.x = 0;
                 gltf.scene.position.y = 0;
                 gltf.scene.rotation.y = 1.58;
                 gltf.scene.rotation.x = 0.3;
-                
-                // Initialize main animation
-                let _playerAnimation = function() {
-                    requestAnimationFrame(_playerAnimation);
 
-                    var stabilization = false;
+                // Initialize main character animation
+                var _p1_intro = new TWEEN.Tween(gltf.scene.position);
+                    _p1_intro.to({ z: -75 }, 5000)
+                    _p1_intro.start();
+                    _p1_intro.onComplete(function(object) {
+                        
+                        // Keep the spaceship flying
+                        var _p1_move = new TWEEN.Tween(gltf.scene.position);
+                            _p1_move.to({ z: "-1.75" }, 1000);
+                            _p1_move.repeat(Infinity);
+                            _p1_move.start();
 
-                    if(gltf.scene.position.z > -100) { // distance from the camera
-                        gltf.scene.position.z -= 1.5;
-                    } else {
-                        gltf.scene.position.z -= 1;
+                        // Keep the spaceship doing an stabilization effect
+                        var _p1_stabilizationUp = new TWEEN.Tween(gltf.scene.position);
+                            _p1_stabilizationUp.to({ y: 1 }, 5000);
+                            _p1_stabilizationUp.start();
+
+                        var _p1_stabilizationDown = new TWEEN.Tween(gltf.scene.position);
+                            _p1_stabilizationDown.to({ y: 0 }, 5000);
+
+                        _p1_stabilizationUp.chain(_p1_stabilizationDown);
+                        _p1_stabilizationDown.chain(_p1_stabilizationUp);
+                    });
+
+                /*var xPosition = 0.9;
+                var xSpeed = 0;
+                var direction = "stop";
+
+                let _updateAnimation = function() {
+                    requestAnimationFrame(_updateAnimation);
+                    switch(direction)
+                    {
+                        case "left":
+                            if(gltf.scene.position.x > -25) {
+                                gltf.scene.position.x -= 0.5;
+                                gltf.scene.position.y -= 0.5;
+                            }
+                            else 
+                            {
+                                xSpeed = 0;
+                                gltf.scene.position.x = -25;
+                            }
+                        break;
+                        case "right":
+                            if(gltf.scene.position.x < 25) {
+                                gltf.scene.position.x += 0.5;
+                                gltf.scene.position.y += 0.5;
+                            }
+                            else 
+                            {
+                                xSpeed = 0;
+                                gltf.scene.position.x = 25;
+                            }
+                        break;
+                        default:
+                            //stop
+                        break;
                     }
 
-                    if(stabilization === false) {
-                        gltf.scene.position.y += 0.01;
-                    } 
-
-                    if(gltf.scene.position.y > 1.00) {
-                        stabilization = true;
-                    }
-
-                    if(stabilization === true) {
-                        gltf.scene.position.y -= 0.01;
-                    }
-
-                    if(gltf.scene.position.y < 0.00) {
-                        stabilization = false;
-                    }
+                    renderer.render(scene, camera);
+                };
 
                     var zSpeed = 0.009;
-                    var xSpeed = 0.9;
-                    var ySpeed = 0.9;
+                    var ySpeed = 0.9;*/
 
-                    document.addEventListener('keydown', event => {
+                    /*document.addEventListener('keydown', event => {
                         if(event.key === 'ArrowUp'){
                             gltf.scene.position.y += ySpeed;
                             ySpeed += 0.055;
                         }
                         if(event.key === 'ArrowLeft'){
+                            //console.log(gltf.scene.position.x);
+                            //console.log(gltf.scene);
+                            //xSpeed += 0.1;
+                            //direction = "left";
+                            //_updateAnimation();
+
+                            var tween = new TWEEN.Tween(gltf.scene.position)
+                                    .to({ x: 100, y: 100, z: 100 }, 10000)
+                                    .start();
+
+                            //gltf.scene.position.x -= 5;
+
                             if(gltf.scene.rotation.y < 1.78) {
                                 gltf.scene.rotation.y += 0.005;
                             }
@@ -125,6 +173,10 @@ class App extends Component {
                             xSpeed += 0.055;
                         }
                         if(event.key === 'ArrowRight'){
+                            //xSpeed += 0.1;
+                            direction = "right";
+                            _updateAnimation();
+
                             if(gltf.scene.rotation.y > 1.38) {
                                 gltf.scene.rotation.y -= 0.005;
                             }
@@ -143,9 +195,13 @@ class App extends Component {
                             gltf.scene.position.z += zSpeed;
                             zSpeed += 0.001;
                         }
-                    });
+                    });*/
 
-                    document.addEventListener('keyup', event => {
+                    /*document.addEventListener('keyup', event => {
+                        
+                        //direction = "stop";
+                        //_updateAnimation();
+
                         if(event.key === 'ArrowUp')
                         {
                             ySpeed = 0.9;
@@ -170,12 +226,7 @@ class App extends Component {
                         {
                             zSpeed = 0.009;
                         }
-                    });
-
-                    renderer.render(scene, camera);
-                };
-
-                _playerAnimation();
+                    });*/                
             },
             ( xhr ) => {
                 // called while loading is progressing
