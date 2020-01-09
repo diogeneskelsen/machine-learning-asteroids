@@ -9,6 +9,7 @@ import Debug from './Debug';
 import DebugDisplay from './DebugDisplay';
 import Stars from './Stars';
 import Light from './Light';
+import Asteroids from './Asteroids';
 
 // Custom style
 import './App.css';
@@ -43,6 +44,12 @@ class App extends Component {
         // Initialize stars
         let _stars = new Stars(scene);
 
+        // Initialize asteroids
+        setTimeout(() => {
+          let _asteroids = new Asteroids(scene, loader, TWEEN);
+          console.log("more 10 asteroids were added");
+        }, 10000);
+        
         // Initialize main animation
         let _mainAnimation = function() {
             requestAnimationFrame(_mainAnimation);
@@ -56,8 +63,10 @@ class App extends Component {
                 let _debugdisplay = new DebugDisplay(_debug);
             }
 
+
+
             TWEEN.update();
-            
+
             // Stars animation
             for(let i = 0; i < _stars.length; i++){
                 _stars[i].rotation.x += 0.05; 
