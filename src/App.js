@@ -6,10 +6,11 @@ import TWEEN from '@tweenjs/tween.js';
 
 // Custom imports and components
 import Debug from './Debug';
-//import DebugDisplay from './DebugDisplay';
+import DebugDisplay from './DebugDisplay';
 import Stars from './Stars';
 import Asteroids from './Asteroids';
 import SpaceShip from './SpaceShip';
+import Collision from './Collision';
 
 // Custom style
 import './App.css';
@@ -49,6 +50,10 @@ class App extends Component {
 
         // Initialize asteroids
         let _asteroids = new Asteroids(scene, loader, TWEEN);
+
+        // Main player
+        let _spaceship = new SpaceShip(scene, loader, TWEEN);
+            _spaceship.add();
         
         // Initialize main animation
         let _mainAnimation = function() {
@@ -60,17 +65,11 @@ class App extends Component {
             // Animation on debug mode
             if(_debug['debug'] === true) 
             {
-                // let _debugdisplay = new DebugDisplay(_debug);
+                let _debugdisplay = new DebugDisplay(_debug);
             }
 
-            // Add asteroids and animate them
-            _asteroids.setTimer(_asteroids.getTimer() - 1);
-            
-            if(_asteroids.getTimer() <= 0) 
-            {
-                _asteroids.add(camera);
-                _asteroids.setTimer();
-            }
+            // Add asteroids
+            _asteroids.spawner(camera);
 
             // Stars animation
             for(let i = 0; i < _stars.length; i++){
@@ -78,16 +77,13 @@ class App extends Component {
                 _stars[i].rotation.y += 0.05;
             }
 
+            // Tween library method to update animations
             TWEEN.update();
 
             renderer.render(scene, camera);
         };
 
         _mainAnimation();
-
-        // Main player
-        let _spaceship = new SpaceShip(scene, loader, TWEEN);
-            _spaceship.add();
     }
 
     // Renderize React component

@@ -29,15 +29,15 @@ function Asteroids(scene, loader, TWEEN)
 		        // Unload asteroids outside of the screen
 		        for (let key in this.asteroids)
 		        {
-		        	//console.log("key " + key);
+		        	// console.log("key " + key);
 		        	if(this.asteroids[key] !== undefined) 
 		        	{
 			        	if(camera.position.z < this.asteroids[key].position.z) 
 			        	{
-			        		//console.log(this.asteroids[key]);
+			        		// console.log(this.asteroids[key]);
 							scene.remove(this.asteroids[key]);
 							this.asteroids = this.asteroids.filter(item => item !== key);
-							//console.log('Removing asteroid: ' + key);
+							// console.log('Removing asteroid: ' + key);
 			        	}
 		        	}
 
@@ -45,7 +45,7 @@ function Asteroids(scene, loader, TWEEN)
             },
             ( xhr ) => {
                 // called while loading is progressing
-                //console.log( 'Asteroid loaded');
+                // console.log( 'Asteroid loaded');
             },
             ( error ) => {
                 // called when loading has errors
@@ -72,6 +72,17 @@ function Asteroids(scene, loader, TWEEN)
 	this.setTimer = function(timer = 200)
 	{
 		this.timer = timer;
+	}
+
+	this.spawner = function(camera)
+	{
+        this.setTimer(this.getTimer() - 1);
+        
+        if(this.getTimer() <= 0) 
+        {
+            this.add(camera);
+            this.setTimer();
+        }
 	}
 }
 
