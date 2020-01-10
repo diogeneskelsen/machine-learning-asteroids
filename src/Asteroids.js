@@ -1,13 +1,11 @@
 function Asteroids(scene, loader, TWEEN)
 {
-	this.scene = scene;
-	this.loader = loader;
 	this.asteroids = [];
 	this.timer = 100; // first asteroid wait time to be added
 
 	this.create = function(camera)
 	{
-        this.loader.load('/asteroids/3/scene.gltf', 
+        loader.load('/asteroids/3/scene.gltf', 
             ( asteroid ) => {
 
 	            // Initial positions
@@ -26,7 +24,7 @@ function Asteroids(scene, loader, TWEEN)
 				this.asteroids[asteroid.scene.uuid] = asteroid.scene;
 
 	            // called when the resource is loaded
-	            this.scene.add(this.asteroids[asteroid.scene.uuid]);
+	            scene.add(this.asteroids[asteroid.scene.uuid]);
 
 		        // Unload asteroids outside of the screen
 		        for (let key in this.asteroids)
@@ -37,7 +35,7 @@ function Asteroids(scene, loader, TWEEN)
 			        	if(camera.position.z < this.asteroids[key].position.z) 
 			        	{
 			        		//console.log(this.asteroids[key]);
-							this.scene.remove(this.asteroids[key]);
+							scene.remove(this.asteroids[key]);
 							this.asteroids = this.asteroids.filter(item => item !== key);
 							//console.log('Removing asteroid: ' + key);
 			        	}
