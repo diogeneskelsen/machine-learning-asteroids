@@ -6,9 +6,8 @@ import TWEEN from '@tweenjs/tween.js';
 
 // Custom imports and components
 import Debug from './Debug';
-import DebugDisplay from './DebugDisplay';
+//import DebugDisplay from './DebugDisplay';
 import Stars from './Stars';
-import Light from './Light';
 import Asteroids from './Asteroids';
 
 // Custom style
@@ -34,7 +33,10 @@ class App extends Component {
         let _debug = new Debug(scene, camera, false);
 
         // Initialize light
-        let _light = new Light(scene);
+        let _light = new THREE.DirectionalLight(0xffffff, 3);
+            _light.position.set(7, 5, 5);
+        
+        scene.add(_light);
 
         // Set default camera view
         camera.position.z = 0;
@@ -57,7 +59,7 @@ class App extends Component {
             // Animation on debug mode
             if(_debug['debug'] === true) 
             {
-                let _debugdisplay = new DebugDisplay(_debug);
+                // let _debugdisplay = new DebugDisplay(_debug);
             }
 
             TWEEN.update();
