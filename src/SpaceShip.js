@@ -1,5 +1,8 @@
-function SpaceShip(scene, loader, TWEEN)
+function SpaceShip(scene, loader, TWEEN, _collision)
 {
+    this._p1_intro = [];
+    this._p1_move = [];
+
 	this.add = function()
 	{
         loader.load('/ioz-501_starship/scene.gltf', 
@@ -15,28 +18,31 @@ function SpaceShip(scene, loader, TWEEN)
                 gltf.scene.rotation.x = 0.3;
 
                 // Initialize main character animation
-                var _p1_intro = new TWEEN.Tween(gltf.scene.position);
-                    _p1_intro.to({ z: -75 }, 5000)
-                    _p1_intro.start();
-                    _p1_intro.onComplete(function(object) {
+                this._p1_intro = new TWEEN.Tween(gltf.scene.position);
+                this._p1_intro.to({ z: -75 }, 5000)
+                this._p1_intro.start();
+                this._p1_intro.onComplete(function(object) {
                         
-                        // Keep the spaceship flying
-                        var _p1_move = new TWEEN.Tween(gltf.scene.position);
-                            _p1_move.to({ z: "-1.75" }, 1000);
-                            _p1_move.repeat(Infinity);
-                            _p1_move.start();
+                    // Keep the spaceship flying
+                    this._p1_move = new TWEEN.Tween(gltf.scene.position);
+                    this._p1_move.to({ z: "-1.65" }, 1000);
+                    this._p1_move.repeat(Infinity);
+                    this._p1_move.start();
+                    this._p1_move.onRepeat(function(position) {
+                        _collision.setCharacterPosition(position);
+                    });
 
-                        // Keep the spaceship doing an stabilization effect
-                        var _p1_stabilizationUp = new TWEEN.Tween(gltf.scene.position);
-                            _p1_stabilizationUp.to({ y: 1 }, 5000);
-                            _p1_stabilizationUp.start();
+                    // Keep the spaceship doing an stabilization effect
+                    var _p1_stabilizationUp = new TWEEN.Tween(gltf.scene.position);
+                        _p1_stabilizationUp.to({ y: 1 }, 5000);
+                        _p1_stabilizationUp.start();
 
-                        var _p1_stabilizationDown = new TWEEN.Tween(gltf.scene.position);
-                            _p1_stabilizationDown.to({ y: 0 }, 5000);
+                    var _p1_stabilizationDown = new TWEEN.Tween(gltf.scene.position);
+                        _p1_stabilizationDown.to({ y: 0 }, 5000);
 
-                        _p1_stabilizationUp.chain(_p1_stabilizationDown);
-                        _p1_stabilizationDown.chain(_p1_stabilizationUp);
-                    });           
+                    _p1_stabilizationUp.chain(_p1_stabilizationDown);
+                    _p1_stabilizationDown.chain(_p1_stabilizationUp);
+                });
             },
             ( xhr ) => {
                 // called while loading is progressing

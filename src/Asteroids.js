@@ -1,6 +1,7 @@
-function Asteroids(scene, loader, TWEEN)
+function Asteroids(scene, loader, TWEEN, _collision)
 {
 	this.asteroids = [];
+	this.tweenIds = [];
 	this.timer = 100; // first asteroid wait time to be added
 
 	this.create = function(camera)
@@ -20,7 +21,12 @@ function Asteroids(scene, loader, TWEEN)
                     _asteroid_rotation_animation.to({ y: yx, x: yx }, 1000);
                     _asteroid_rotation_animation.repeat(Infinity);
                     _asteroid_rotation_animation.start();
+                    _asteroid_rotation_animation.onRepeat(function(position) {
+                    	position.z = asteroid.scene.position.z;
+                        _collision.setAsteroidPosition(_asteroid_rotation_animation._id, position);
+                    });
 
+                this.tweenIds[asteroid.scene.uuid] = _asteroid_rotation_animation;
 				this.asteroids[asteroid.scene.uuid] = asteroid.scene;
 
 	            // called when the resource is loaded
@@ -29,15 +35,18 @@ function Asteroids(scene, loader, TWEEN)
 		        // Unload asteroids outside of the screen
 		        for (let key in this.asteroids)
 		        {
-		        	// console.log("key " + key);
 		        	if(this.asteroids[key] !== undefined) 
 		        	{
 			        	if(camera.position.z < this.asteroids[key].position.z) 
 			        	{
-			        		// console.log(this.asteroids[key]);
+			        		// Remove from scene
 							scene.remove(this.asteroids[key]);
+							// Remove from tween
+							TWEEN.remove(this.tweenIds[key]);
+
+							// Remove from arrays
 							this.asteroids = this.asteroids.filter(item => item !== key);
-							// console.log('Removing asteroid: ' + key);
+							this.tweenIds = this.tweenIds.filter(item => item !== key);
 			        	}
 		        	}
 
