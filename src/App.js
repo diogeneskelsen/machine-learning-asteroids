@@ -45,10 +45,7 @@ class App extends Component {
         let _stars = new Stars(scene);
 
         // Initialize asteroids
-        setTimeout(() => {
-          let _asteroids = new Asteroids(scene, loader, TWEEN);
-          console.log("more 10 asteroids were added");
-        }, 10000);
+        let _asteroids = new Asteroids(scene, loader, TWEEN);
         
         // Initialize main animation
         let _mainAnimation = function() {
@@ -63,9 +60,16 @@ class App extends Component {
                 let _debugdisplay = new DebugDisplay(_debug);
             }
 
-
-
             TWEEN.update();
+
+            // Add asteroids and animate them
+            _asteroids.setTimer(_asteroids.getTimer() - 1);
+            
+            if(_asteroids.getTimer() <= 0) 
+            {
+                _asteroids.add(camera);
+                _asteroids.setTimer();
+            }
 
             // Stars animation
             for(let i = 0; i < _stars.length; i++){
@@ -90,6 +94,18 @@ class App extends Component {
                 gltf.scene.position.y = 0;
                 gltf.scene.rotation.y = 1.58;
                 gltf.scene.rotation.x = 0.3;
+
+                // Camera rotation
+                /*document.addEventListener('mousemove', onDocumentMouseMove, false);
+                var mouse = new THREE.Vector2()
+                function onDocumentMouseMove(event) {
+                    event.preventDefault();
+                    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+                    gltf.scene.rotation.y = mouse.y;
+                    gltf.scene.rotation.x = mouse.x;
+                }*/
 
                 // Initialize main character animation
                 var _p1_intro = new TWEEN.Tween(gltf.scene.position);
