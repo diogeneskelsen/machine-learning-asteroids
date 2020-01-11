@@ -8,7 +8,6 @@ import TWEEN from '@tweenjs/tween.js';
 // Custom imports
 import Debug from './Debug';
 import DebugDisplay from './DebugDisplay';
-import Stars from './Stars';
 import Space from './Space';
 import Asteroids from './Asteroids';
 import SpaceShip from './SpaceShip';
@@ -58,7 +57,7 @@ class App extends Component {
         let _asteroids = new Asteroids(scene, loader, TWEEN, _collision);
 
         // Main player
-        let _spaceship = new SpaceShip(scene, loader, TWEEN, _collision);
+        let _spaceship = new SpaceShip(scene, loader, TWEEN, _collision, controls);
             _spaceship.add();
             
         this.mount.appendChild(renderer.domElement);
@@ -76,8 +75,7 @@ class App extends Component {
             // Update camera position
             // comment to stop screen moving
             camera.position.z -= 0.035; 
-            //controls.update();
-
+            controls.update();
 
             // Add asteroids
             _asteroids.spawner(camera);

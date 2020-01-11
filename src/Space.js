@@ -13,6 +13,12 @@ function Space(scene, loader, TWEEN)
                 gltf.scene.position.y = -50;
                 //gltf.scene.rotation.y = 0.58;
                 //gltf.scene.rotation.x = 0.1;
+
+                // Keep the space moving
+                var space_moving = new TWEEN.Tween(gltf.scene.position);
+                    space_moving.to({ z: "-1.65" }, 1000);
+                    space_moving.repeat(Infinity);
+                    space_moving.start();
             },
             ( xhr ) => {
                 // called while loading is progressing

@@ -1,4 +1,4 @@
-function SpaceShip(scene, loader, TWEEN, _collision)
+function SpaceShip(scene, loader, TWEEN, _collision, controls)
 {
     this._p1_intro = [];
     this._p1_move = [];
@@ -16,6 +16,7 @@ function SpaceShip(scene, loader, TWEEN, _collision)
                 gltf.scene.position.y = 0;
                 gltf.scene.rotation.y = 1.58;
                 gltf.scene.rotation.x = 0.3;
+                controls.target = gltf.scene.position;
 
                 // Initialize main character animation
                 this._p1_intro = new TWEEN.Tween(gltf.scene.position);
@@ -30,6 +31,7 @@ function SpaceShip(scene, loader, TWEEN, _collision)
                     this._p1_move.start();
                     this._p1_move.onRepeat(function(position) {
                         _collision.setCharacterPosition(position);
+                        controls.target = position;
                     });
 
                     // Keep the spaceship doing an stabilization effect
