@@ -18,6 +18,9 @@ function SpaceShip(scene, loader, TWEEN, _collision, controls)
                 gltf.scene.rotation.x = 0.3;
                 controls.target = gltf.scene.position;
 
+                console.log(gltf.scene);
+                console.log(gltf);
+
                 // Initialize main character animation
                 this._p1_intro = new TWEEN.Tween(gltf.scene.position);
                 this._p1_intro.to({ z: -75 }, 5000)

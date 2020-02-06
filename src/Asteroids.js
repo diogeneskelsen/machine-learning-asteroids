@@ -10,9 +10,9 @@ function Asteroids(scene, loader, TWEEN, _collision)
             ( asteroid ) => {
 
 	            // Initial positions
-	            asteroid.scene.position.z = (camera.position.z + -150); // 0 to remove from the screen
-	            asteroid.scene.position.x = Math.floor(Math.random() * (50 - -50 + 1)) + -50;
-	            asteroid.scene.position.y = Math.floor(Math.random() * (50 - -50 + 1)) + -50;
+	            asteroid.scene.position.z = (camera.position.z + -100); // 0 to remove from the screen
+	            asteroid.scene.position.x = 5;//Math.floor(Math.random() * (50 - -50 + 1)) + -50;
+	            asteroid.scene.position.y = 0;//Math.floor(Math.random() * (50 - -50 + 1)) + -50;
 
 	            let yx = Math.random() * (1 - -1 + 0.1) + -1;
 	            	yx = (yx < 0) ? yx.toString() : "+" + yx.toString();
@@ -78,7 +78,7 @@ function Asteroids(scene, loader, TWEEN, _collision)
 		return this.timer;
 	}
 
-	this.setTimer = function(timer = 200)
+	this.setTimer = function(timer = 20000)
 	{
 		this.timer = timer;
 	}
