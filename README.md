@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+![Game Preview](https://drive.google.com/u/0/uc?id=1l1z3-I2wLn5evr_anvYn9PLXtQN30Ew7&export=download)
+
 ## Available Scripts
 
 In the project directory, you can run:
