@@ -2,16 +2,16 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import GLTFLoader from 'three-gltf-loader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import TWEEN from '@tweenjs/tween.js';
 
 // Custom imports
-import Debug from './Debug';
-import DebugDisplay from './DebugDisplay';
-import Space from './Space';
-import Asteroids from './Asteroids';
-import SpaceShip from './SpaceShip';
-import Collision from './Collision';
+import Debug from './component/Debug.ts';
+import DebugDisplay from './component/DebugDisplay.ts';
+import Space from './component/Space.ts';
+import Asteroids from './component/Asteroids.ts';
+import SpaceShip from './component/SpaceShip.ts';
+import Collision from './component/Collision.ts';
 
 // Custom style
 import './App.css';
