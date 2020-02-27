@@ -1,16 +1,12 @@
-function Collision()
-{
-    this.asteroids = [];
-    this.characterPosition = [];
+class Collision {
+    asteroids: any;
+    player: any;
 
-	this.data = function()
-	{
-        for(let index in this.asteroids)
-        {
-            let z = this.characterPosition.z - this.asteroids[index].z;
+	data(): void {
+        for(let index in this.asteroids) {
+            let z = this.player.z - this.asteroids[index].z;
 
-            if(z < 50) 
-            {
+            if(z < 50) {
                 //console.log("Distance " + z + " S:" + this.characterPosition.z + " A: " + this.asteroids[index].z);
             }
 
@@ -21,19 +17,16 @@ function Collision()
         //console.log("Character: " + this.characterPosition.z);
 	}
 
-    this.setAsteroidPosition = function(id, position)
-    {
+    setAsteroidPositionn(id: any, position: any): void {
         this.asteroids[id] = position;
     }
 
-    this.setCharacterPosition = function(position)
-    {
-        this.characterPosition = position;
+    setPlayerPosition(position: any): void {
+        this.player = position;
     }
 
-    this.getCharacterPosition = function()
-    {
-        return this.characterPosition;
+    getPlayerPosition(): any {
+        return this.player;
     }
 }
 
