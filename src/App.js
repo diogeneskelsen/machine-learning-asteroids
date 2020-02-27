@@ -70,6 +70,7 @@ class App extends Component {
             if(_debug['debug'] === true) 
             {
                 let _debugdisplay = new DebugDisplay(_debug);
+                console.log(_debugdisplay);
             }
 
             // Update camera position

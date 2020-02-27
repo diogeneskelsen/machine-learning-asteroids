@@ -18,7 +18,7 @@ class SpaceShip {
     }
 
 	add(): void {
-        this. loader.load('/ioz-501_starship/scene.gltf', 
+        this.loader.load('/ioz-501_starship/scene.gltf',
             ( gltf: any ) => {
                 // called when the resource is loaded
                 this.scene.add(gltf.scene);

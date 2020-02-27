@@ -10,7 +10,7 @@ class  Debug {
 		this.camera = camera;
 		this.debug = debug;
 
-		if(this.debug == true) {
+		if(this.debug === true) {
 			this.run();
 		}
 	}
@@ -22,7 +22,7 @@ class  Debug {
 		let cube = new THREE.Mesh(geometry, material);
 		this.scene.add( cube );
 
-		return (this.debug == true) ? true : false;
+		return (this.debug === true) ? true : false;
 	}
 }
 
