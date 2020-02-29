@@ -23,7 +23,7 @@ class Space {
                 //gltf.scene.rotation.x = 0.1;
 
                 // Keep the space moving
-                var space_moving = new this.TWEEN.Tween(gltf.scene.position);
+                let space_moving = new this.TWEEN.Tween(gltf.scene.position);
                     space_moving.to({ z: "-1.65" }, 1000);
                     space_moving.repeat(Infinity);
                     space_moving.start();

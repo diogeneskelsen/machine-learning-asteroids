@@ -48,11 +48,11 @@ class SpaceShip {
                     });
 
                     // Keep the spaceship doing an stabilization effect
-                    var _p1_stabilizationUp = new this.TWEEN.Tween(gltf.scene.position);
+                    let _p1_stabilizationUp = new this.TWEEN.Tween(gltf.scene.position);
                         _p1_stabilizationUp.to({ y: 1 }, 5000);
                         _p1_stabilizationUp.start();
 
-                    var _p1_stabilizationDown = new this.TWEEN.Tween(gltf.scene.position);
+                    let _p1_stabilizationDown = new this.TWEEN.Tween(gltf.scene.position);
                         _p1_stabilizationDown.to({ y: 0 }, 5000);
 
                     _p1_stabilizationUp.chain(_p1_stabilizationDown);
